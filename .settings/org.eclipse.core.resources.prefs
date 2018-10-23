@@ -1,0 +1,6 @@
+eclipse.preferences.version=1
+encoding//src/main/java/com/project/ohffice/board/controller/BoardController.java=UTF-8
+encoding//src/main/java/com/project/ohffice/board/controller/DivisionController.java=UTF-8
+encoding//src/main/java/com/project/ohffice/company/controller/CompanyController.java=UTF-8
+encoding//src/main/java/com/project/ohffice/employee/controller/EmpController.java=UTF-8
+encoding//src/main/java/com/project/ohffice/employee/model/dao/EmpDao.java=UTF-8

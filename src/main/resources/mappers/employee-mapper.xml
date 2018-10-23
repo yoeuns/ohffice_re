@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC
+"-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="employeeMapper">
+
+<!-- 	<resultMap id = "resultMember" type ="Member">
+	<id property="userid" column="userid"></id>
+	<result property="userpwd" column="userpwd" />
+	<result property="username" column="username" />
+	<result property="age" column="age" />
+	<result property="email" column="email" />
+	<result property="phone" column="phone" />
+	<result property="gender" column="gender" />
+	<result property="hobby" column="hobby" />
+	<result property="etc" column="etc" />
+	<result property="enroll_Date" column="ENROLL_DATE" />
+	<result property="lastmodified" column="LASTMODIFIED" />
+	</resultMap>
+	
+	<resultMap id = "resultList" type ="Member">
+	<result property="userid" column="userid"/>
+	<result property="userpwd" column="userpwd" />
+	<result property="username" column="username" />
+	<result property="age" column="age" />
+	<result property="email" column="email" />
+	<result property="phone" column="phone" />
+	<result property="gender" column="gender" />
+	<result property="hobby" column="hobby" />
+	<result property="etc" column="etc" />
+	<result property="enroll_Date" column="ENROLL_DATE" />
+	<result property="lastmodified" column="LASTMODIFIED" />
+	</resultMap>
+	
+	<select id="loginCheck" parameterType="Member" resultType="Member" resultMap="resultMember">
+		select
+		* from member
+		where userid = #{userid} and userpwd = #{userpwd}
+	</select>
+	
+	<select id="selectMember" parameterType="string" resultMap="resultMember">
+		select *
+		from member where userid = #{userid}
+	</select>
+	
+	<select id="dupId" parameterType="string" resultType="int">
+		select count(userid) from member where userid = #{userid}
+	</select>
+	
+	<select id="selectList" resultMap="resultList">
+		select * from member
+	</select>
+	
+	<update id="updateMember" parameterType="Member" >
+		update member
+		set userpwd = #{userpwd}, age = #{age},
+		email = #{email}, phone = #{phone},
+		hobby = #{hobby}, etc = #{etc}
+		where userid = #{userid}
+	</update>
+	
+	<delete id="deleteMember" parameterType="string">
+		delete from member
+		where userid =  #{userid}
+	</delete>
+	 -->
+	 <resultMap type="CommonInfo" id="resultInfoList">
+		<result property="com_url" column="com_url" />
+		<result property="emp_name" column="emp_name" />
+		<result property="dept_name" column="dept_name" />
+		<result property="emp_email" column="emp_email" />
+		<result property="emp_tel" column="emp_tel" />
+		<result property="pos_name" column="pos_name" />			
+	</resultMap>
+	 
+	<resultMap id = "resultEmp" type ="Employee">
+	<result property="emp_email" column="emp_email" />
+	<result property="client_id" column="client_id" />
+	<result property="emp_name" column="emp_name" />
+	<result property="auth_num" column="auth_num" />
+	<result property="dept_num" column="dept_num" />
+	<result property="pos_num" column="pos_num" />
+	<result property="emp_date" column="emp_date" />
+	<result property="emp_tel" column="emp_tel" />
+	<result property="emp_addr" column="emp_addr" />
+	<result property="emp_birth" column="emp_birth" />
+	<result property="emp_gender" column="emp_gender" />
+	<result property="emp_pic" column="emp_pic" />
+	<result property="emp_produce" column="emp_produce" />
+	<result property="emp_marriaged" column="emp_marriaged" />
+	<result property="emp_army" column="emp_army" />
+	<result property="vac_num" column="vac_num" />
+	<result property="emp_sign" column="emp_sign" />
+	<result property="com_url" column="com_url" />
+	<result property="certification_status" column="certification_status" />
+	<result property="certification_key" column="certification_key" />
+	</resultMap> 
+	
+	<!-- <resultMap id = "resultEmp" type ="Employee">
+>>>>>>> 5304dc57111d0d40290dc4e0da31d9ecae9eb0f4
+	<id property="emp_email" column="emp_email"></id>
+	<result property="client_id" column="client_id" />
+	<result property="emp_name" column="emp_name" />
+	<result property="auth_num" column="auth_num" />
+	<result property="dept_num" column="dept_num" />
+	<result property="pos_num" column="pos_num" />
+	<result property="emp_date" column="emp_date" />
+	<result property="emp_tel" column="emp_tel" />
+	<result property="emp_addr" column="emp_addr" />
+	<result property="emp_birth" column="emp_birth" />
+	<result property="emp_gender" column="emp_gender" />
+	<result property="emp_pic" column="emp_pic" />
+	<result property="emp_produce" column="emp_produce" />
+	<result property="emp_marriaged" column="emp_marriaged" />
+	<result property="emp_army" column="emp_army" />
+	<result property="vac_num" column="vac_num" />
+	<result property="emp_sign" column="emp_sign" />
+	<result property="com_url" column="com_url" />
+	<result property="certification_status" column="certification_status" />
+	<result property="certification_key" column="certification_key" />
+	</resultMap> -->
+	
+	<resultMap id = "resultEmpList" type ="EmployeeList">
+	<result property="emp_email" column="emp_email" />
+	<result property="emp_name" column="emp_name" />
+	<result property="auth_num" column="auth_num" />
+	<result property="dept_num" column="dept_num" />
+	<result property="emp_tel" column="emp_tel" />
+	<result property="com_url" column="com_url" />
+	<result property="dept_name" column="dept_name" />
+	<result property="auth_name" column="auth_name" />
+	<result property="com_name" column="com_name" />
+	</resultMap>
+	
+	<select id="selectInfoList" resultMap="resultInfoList" resultType="CommonInfo">
+	select emp_name, emp_email, emp_tel, dept_name, pos_name
+	from employee
+	left join department using (dept_num)
+	left join position using(pos_num)
+</select>
+	<select id="empList" resultType="EmployeeList" resultMap="resultEmpList">
+		select emp_email, emp_name, e.auth_num, e.dept_num, e.com_url, emp_tel, dept_name, auth_name 
+		from employee e
+		left OUTER JOIN department D ON e.dept_num = D.dept_num
+		left OUTER JOIN authority a on e.auth_num = a.auth_num
+		order by e.auth_num
+	</select>
+	
+	<insert id="empInsert" parameterType="Employee" 
+		statementType="PREPARED" >
+		insert into employee (emp_email, client_id, emp_name, certification_status) values (<!-- #{emp_email}, #{client_id}, #{emp_name},
+		#{auth_num}, #{dept_num}, #{pos_num}, sysdate, #{emp_tel}, #{emp_addr},#{emp_birth},
+		#{emp_gender},#{emp_pic},#{vac_num},#{emp_sign},#{com_num},default,#{certification_key} -->#{emp_email},  #{client_id},
+		 #{emp_name}, 'Y')
+	</insert>
+	
+	<!-- 내 회사 직원 추가하는 insert -->
+	<insert id="insertMyEmp" parameterType="Employee" statementType="PREPARED">
+		insert into employee (emp_email, emp_name, auth_num, dept_num, pos_num, emp_date, com_url, certification_key) values 
+		(#{emp_email}, #{emp_name}, #{auth_num}, #{dept_num}, #{pos_num}, #{emp_date}, #{com_url}, #{certification_key})
+	</insert>
+	
+	<select id="empCount" parameterType="Employee" resultType="int">
+	select count(*) from employee where emp_email = #{emp_email} and client_id = #{client_id} 
+	</select>
+	
+	<select id="selectCompany" parameterType="Employee" resultType="String">
+	select com_url from employee
+	where client_id = #{client_id}
+	</select>
+	
+	<update id="updateCompanyEmployee" parameterType="HashMap">
+		update employee
+		set com_url = #{com_url}, auth_num = 1
+		where emp_email = #{emp_email} 
+	</update>
+	
+	<select id="selectEmp" parameterType="String" resultMap="resultEmp" resultType="Employee">
+	select * from employee where emp_email = #{emp_email} 
+	</select>
+	
+	<update id="updateEmpId" parameterType="Employee">
+		update employee
+		set client_id = #{client_id}
+		where emp_email = #{emp_email} 
+	</update>
+	
+	<update id="updateCertification" parameterType="Employee">
+		update employee
+		set certification_status = 'Y'
+		where emp_email = #{emp_email} and certification_key = #{certification_key}
+	</update>
+	
+	<delete id="deleteEmp" parameterType="String">
+		delete from employee
+		where emp_email = #{emp_email}
+	</delete>
+	
+	<update id="updateEmpDept" parameterType="Employee">
+		update employee
+		set dept_num = #{dept_num}
+		where emp_email = #{emp_email} 
+	</update>
+	
+	<select id="selectEmployee" parameterType="String" resultMap="resultEmp">
+      select * from employee where emp_email = #{emp_email}
+  	</select>
+  	
+  	<update id="updateEmployee" parameterType="Employee" flushCache="true" statementType="PREPARED">
+      update employee
+      set emp_produce = #{emp_produce},
+      emp_addr = #{emp_addr},
+      emp_tel = #{emp_tel},
+      emp_birth = #{emp_birth},
+      emp_gender = #{emp_gender},
+      emp_marriaged = #{emp_marriaged},
+      emp_army = #{emp_army}
+      where emp_email = #{emp_email}
+   </update>
+   
+   <select id="selectEmpCom" parameterType="String" resultMap="resultEmpList">
+      select c.com_name, e.emp_email, e.emp_name, e.auth_num, e.dept_num, e.com_url, emp_tel, dept_name, auth_name 
+		from employee e
+		left OUTER JOIN department D ON e.dept_num = D.dept_num
+		left OUTER JOIN authority a on e.auth_num = a.auth_num
+    left outer join company c on c.com_url = e.com_url
+    where e.com_url = #{com_url}
+		order by e.auth_num
+   </select>
+   
+   <select id="selectDept" parameterType="String" resultMap="resultEmpList">
+      SELECT C.COM_NAME, D.DEPT_NAME, E.EMP_NAME, E.EMP_EMAIL, E.EMP_TEL FROM EMPLOYEE E
+      INNER JOIN DEPARTMENT D ON E.DEPT_NUM = D.DEPT_NUM
+      FULL OUTER JOIN COMPANY C ON C.COM_URL = E.COM_URL WHERE D.DEPT_NAME = #{dept_name}
+      
+   </select>
+  	
+</mapper>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC
+"-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="authorityMapper">
+
+<resultMap type="Authority" id="resultAuthList">
+<result property="com_url" column="com_url"/>
+<result property="auth_num" column="auth_num"/>
+<result property="auth_name" column="auth_name"/>
+</resultMap>
+
+<resultMap type="Authority" id="resultAuth">
+<id property="auth_num" column="auth_num"/>
+<result property="com_url" column="com_url"/>
+<result property="auth_name" column="auth_name"/>
+</resultMap>
+ 
+<!-- 권한 목록 리스트 -->
+<select id="selectAuthList" resultMap="resultAuthList" resultType="Authority">
+select * from authority order by auth_num
+</select> 
+
+
+</mapper>
+
