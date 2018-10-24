@@ -99,5 +99,10 @@
       	com_addr = #{com_addr}
       	where com_url = #{com_url}
 	</update>
+	
+	<select id="infoCom" parameterType="String" resultMap="resultCompany">
+		SELECT C.COM_NAME, C.COM_URL, C.COM_TEL,C.COM_ADDR FROM COMPANY C
+		WHERE C.COM_URL = #{com_url}
+	</select>
 
 </mapper>

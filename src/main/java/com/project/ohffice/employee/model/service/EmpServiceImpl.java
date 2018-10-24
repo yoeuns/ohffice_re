@@ -106,5 +106,10 @@ public class EmpServiceImpl implements EmpService {
 		return empDao.selectDept(dept_name);
 	}
 
+	@Override
+	public int updateEmpPos(Employee emp) {
+		return empDao.updateEmpPos(emp);
+	}
+
 
 }

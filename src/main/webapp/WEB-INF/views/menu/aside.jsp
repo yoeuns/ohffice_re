@@ -74,7 +74,7 @@ $.ajax({
 	            </span>
 	         	</a>
 	         	<ul class="treeview-menu">
-	         		<li><a href="#">인사 설정</a></li>
+	         		<li><a href="movePosSetting.do">인사 설정</a></li>
 	         		<li><a href="moveDeptSetting.do">조직도/조직원 관리</a></li>
 	         	</ul>
          	</li>     

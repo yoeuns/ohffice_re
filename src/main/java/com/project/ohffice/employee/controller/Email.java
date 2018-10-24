@@ -24,96 +24,96 @@ import com.project.ohffice.employee.model.vo.Employee;
 
 @Controller
 public class Email {
-   
-   @Autowired
-   private EmpService empService;
-   
-   @RequestMapping(value = "mailSender.do")
-   public String mailSender(Employee emp, HttpServletResponse response, HttpServletRequest request, ModelMap mo) throws Exception, AddressException, MessagingException {
-      response.setContentType("text/html; charset=UTF-8");
-      PrintWriter out = response.getWriter();
-      System.out.println(emp);
-      if(emp.getEmp_email().contains("@gmail.com") == false) {
-         out.append("mailerror");
-         out.flush();
-      } else if(emp.getEmp_email() == null || emp.getEmp_name() == null || emp.getAuth_num() == '0') {
-         out.append("inputerror");
-         out.flush();
-      } else if(empService.selectEmp(emp.getEmp_email()) != null) {
-         out.append("already");
-         out.flush();
-      } else {
-         String random = "";
-         random = String.valueOf((int) Math.floor((Math.random() * (99999 - 10000 + 1))) + 10000);
-         emp.setCertification_key(random);
-         if(empService.insertMyEmp(emp) > 0) {
-            
-            // ³×ÀÌ¹öÀÏ °æ¿ì smtp.naver.com À» ÀÔ·ÂÇÕ´Ï´Ù.
-            // GoogleÀÏ °æ¿ì smtp.gmail.com À» ÀÔ·ÂÇÕ´Ï´Ù.
-            String host = "smtp.naver.com";
-            
-            final String username = "goodnight_bot";       //³×ÀÌ¹ö ¾ÆÀÌµð¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä. @nave.comÀº ÀÔ·ÂÇÏÁö ¸¶½Ã±¸¿ä.
-            final String password = "good@3768";   //³×ÀÌ¹ö ÀÌ¸ÞÀÏ ºñ¹Ð¹øÈ£¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä.
-            int port=465; //Æ÷Æ®¹øÈ£
-             
-            // ¸ÞÀÏ ³»¿ë
-            String recipient = emp.getEmp_email();    //¹Þ´Â »ç¶÷ÀÇ ¸ÞÀÏÁÖ¼Ò¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä.
-            String subject = "Oh!ffice ÀÎÁõ ¸ÞÀÏÀÔ´Ï´Ù.";    //¸ÞÀÏ Á¦¸ñ ÀÔ·ÂÇØÁÖ¼¼¿ä.
-            String body = "http://localhost:8888/ohffice/ohffice.do?emp_email=" + emp.getEmp_email() + "&certification_key=" + emp.getCertification_key(); //¸ÞÀÏ ³»¿ë ÀÔ·ÂÇØÁÖ¼¼¿ä.
-             
-            Properties props = System.getProperties(); // Á¤º¸¸¦ ´ã±â À§ÇÑ °´Ã¼ »ý¼º
-             
-            // SMTP ¼­¹ö Á¤º¸ ¼³Á¤
-            props.put("mail.smtp.host", host);
-            props.put("mail.smtp.port", port);
-            props.put("mail.smtp.auth", "true");
-            props.put("mail.smtp.ssl.enable", "true");
-            props.put("mail.smtp.ssl.trust", host);
-               
-            //Session »ý¼º
-            Session session = Session.getDefaultInstance(props, new javax.mail.Authenticator() {
-               String un=username;
-               String pw=password;
-               protected javax.mail.PasswordAuthentication getPasswordAuthentication() {
-                  return new javax.mail.PasswordAuthentication(un, pw);
-               }
-            });
-            session.setDebug(true); //for debug
-               
-            Message mimeMessage = new MimeMessage(session); //MimeMessage »ý¼º
-            mimeMessage.setFrom(new InternetAddress("goodnight_bot@naver.com")); //¹ß½ÅÀÚ ¼ÂÆÃ , º¸³»´Â »ç¶÷ÀÇ ÀÌ¸ÞÀÏÁÖ¼Ò¸¦ ÇÑ¹ø ´õ ÀÔ·ÂÇÕ´Ï´Ù. ÀÌ¶§´Â ÀÌ¸ÞÀÏ Ç® ÁÖ¼Ò¸¦ ´Ù ÀÛ¼ºÇØÁÖ¼¼¿ä.
-            mimeMessage.setRecipient(Message.RecipientType.TO, new InternetAddress(recipient)); //¼ö½ÅÀÚ¼ÂÆÃ //.TO ¿Ü¿¡ .CC(ÂüÁ¶) .BCC(¼ûÀºÂüÁ¶) µµ ÀÖÀ½
-         
-         
-            mimeMessage.setSubject(subject);  //Á¦¸ñ¼ÂÆÃ
-            mimeMessage.setText(body);        //³»¿ë¼ÂÆÃ
-            Transport.send(mimeMessage); //javax.mail.Transport.send() ÀÌ¿ë   
-            
-            out.append("ok");
-            out.flush();
-         } else {
-            out.append("fail");
-            out.flush();
-         }
-      } 
-         
-      out.close();
+	
+	@Autowired
+	private EmpService empService;
+	
+	@RequestMapping(value = "mailSender.do")
+	public String mailSender(Employee emp, HttpServletResponse response, HttpServletRequest request, ModelMap mo) throws Exception, AddressException, MessagingException {
+		response.setContentType("text/html; charset=UTF-8");
+		PrintWriter out = response.getWriter();
+		System.out.println(emp);
+		if(emp.getEmp_email().contains("@gmail.com") == false) {
+			out.append("mailerror");
+			out.flush();
+		} else if(emp.getEmp_email() == null || emp.getEmp_name() == null || emp.getAuth_num() == '0') {
+			out.append("inputerror");
+			out.flush();
+		} else if(empService.selectEmp(emp.getEmp_email()) != null) {
+			out.append("already");
+			out.flush();
+		} else {
+			String random = "";
+			random = String.valueOf((int) Math.floor((Math.random() * (99999 - 10000 + 1))) + 10000);
+			emp.setCertification_key(random);
+			if(empService.insertMyEmp(emp) > 0) {
+				
+				// ë„¤ì´ë²„ì¼ ê²½ìš° smtp.naver.com ì„ ìž…ë ¥í•©ë‹ˆë‹¤.
+				// Googleì¼ ê²½ìš° smtp.gmail.com ì„ ìž…ë ¥í•©ë‹ˆë‹¤.
+				String host = "smtp.naver.com";
+				
+				final String username = "goodnight_bot";       //ë„¤ì´ë²„ ì•„ì´ë””ë¥¼ ìž…ë ¥í•´ì£¼ì„¸ìš”. @nave.comì€ ìž…ë ¥í•˜ì§€ ë§ˆì‹œêµ¬ìš”.
+				final String password = "good@3768";   //ë„¤ì´ë²„ ì´ë©”ì¼ ë¹„ë°€ë²ˆí˜¸ë¥¼ ìž…ë ¥í•´ì£¼ì„¸ìš”.
+				int port=465; //í¬íŠ¸ë²ˆí˜¸
+				 
+				// ë©”ì¼ ë‚´ìš©
+				String recipient = emp.getEmp_email();    //ë°›ëŠ” ì‚¬ëžŒì˜ ë©”ì¼ì£¼ì†Œë¥¼ ìž…ë ¥í•´ì£¼ì„¸ìš”.
+				String subject = "Oh!ffice ì¸ì¦ ë©”ì¼ìž…ë‹ˆë‹¤."; 	//ë©”ì¼ ì œëª© ìž…ë ¥í•´ì£¼ì„¸ìš”.
+				String body = "http://localhost:8888/ohffice/ohffice.do?emp_email=" + emp.getEmp_email() + "&certification_key=" + emp.getCertification_key(); //ë©”ì¼ ë‚´ìš© ìž…ë ¥í•´ì£¼ì„¸ìš”.
+				 
+				Properties props = System.getProperties(); // ì •ë³´ë¥¼ ë‹´ê¸° ìœ„í•œ ê°ì²´ ìƒì„±
+				 
+				// SMTP ì„œë²„ ì •ë³´ ì„¤ì •
+				props.put("mail.smtp.host", host);
+				props.put("mail.smtp.port", port);
+				props.put("mail.smtp.auth", "true");
+				props.put("mail.smtp.ssl.enable", "true");
+				props.put("mail.smtp.ssl.trust", host);
+				   
+				//Session ìƒì„±
+				Session session = Session.getDefaultInstance(props, new javax.mail.Authenticator() {
+					String un=username;
+					String pw=password;
+					protected javax.mail.PasswordAuthentication getPasswordAuthentication() {
+						return new javax.mail.PasswordAuthentication(un, pw);
+					}
+				});
+				session.setDebug(true); //for debug
+				   
+				Message mimeMessage = new MimeMessage(session); //MimeMessage ìƒì„±
+				mimeMessage.setFrom(new InternetAddress("goodnight_bot@naver.com")); //ë°œì‹ ìž ì…‹íŒ… , ë³´ë‚´ëŠ” ì‚¬ëžŒì˜ ì´ë©”ì¼ì£¼ì†Œë¥¼ í•œë²ˆ ë” ìž…ë ¥í•©ë‹ˆë‹¤. ì´ë•ŒëŠ” ì´ë©”ì¼ í’€ ì£¼ì†Œë¥¼ ë‹¤ ìž‘ì„±í•´ì£¼ì„¸ìš”.
+				mimeMessage.setRecipient(Message.RecipientType.TO, new InternetAddress(recipient)); //ìˆ˜ì‹ ìžì…‹íŒ… //.TO ì™¸ì— .CC(ì°¸ì¡°) .BCC(ìˆ¨ì€ì°¸ì¡°) ë„ ìžˆìŒ
+			
+			
+				mimeMessage.setSubject(subject);  //ì œëª©ì…‹íŒ…
+				mimeMessage.setText(body);        //ë‚´ìš©ì…‹íŒ…
+				Transport.send(mimeMessage); //javax.mail.Transport.send() ì´ìš©	
+				
+				out.append("ok");
+				out.flush();
+			} else {
+				out.append("fail");
+				out.flush();
+			}
+		} 
+			
+		out.close();
 
-      return "admin/deptSetting";
-   }
-   
-   @RequestMapping(value = "ohffice.do")
-   public ModelAndView mailCheck(Employee emp, HttpServletResponse response, ModelAndView mv) throws Exception {
-      response.setContentType("text/html; charset=UTF-8");
+		return "admin/deptSetting";
+	}
+	
+	@RequestMapping(value = "ohffice.do")
+	public ModelAndView mailCheck(Employee emp, HttpServletResponse response, ModelAndView mv) throws Exception {
+		response.setContentType("text/html; charset=UTF-8");
 
-      if(empService.updateCertification(emp) > 0) {
-         mv.addObject("emailResult", "ok");
-      }
-      else {
-         mv.addObject("emailResult", "fail");
-      }
-      mv.setViewName("emailCertification");
-      
-      return mv;
-   }
+		if(empService.updateCertification(emp) > 0) {
+			mv.addObject("emailResult", "ok");
+		}
+		else {
+			mv.addObject("emailResult", "fail");
+		}
+		mv.setViewName("emailCertification");
+		
+		return mv;
+	}
 }

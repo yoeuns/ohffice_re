@@ -44,5 +44,12 @@ public class CompanyServiceImpl implements CompanyService {
 		return companyDao.createBoard(map);
 
 	}
+	
+	@Override
+	public Company infoCom(String comURL) {
+
+		return companyDao.infoCom(comURL);
+
+	}
 
 }

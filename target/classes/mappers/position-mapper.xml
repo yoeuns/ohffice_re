@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC
+"-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="positionMapper">
+
+<resultMap type="Position" id="resultList">
+<result property="pos_num" column="pos_num"/>
+<result property="com_url" column="com_url"/>
+<result property="pos_name" column="pos_name"/>
+</resultMap>
+
+<resultMap type="Position" id="result">
+<id property="pos_num" column="pos_num"/>
+<result property="com_url" column="com_url"/>
+<result property="pos_name" column="pos_name"/>
+</resultMap>
+
+<!-- 직급 목록 리스트 -->
+<select id="selectList" parameterType="String" resultMap="resultList" resultType="Position">
+select * from position where com_url = #{com_url} order by pos_num
+</select>
+
+<!-- 직급 추가 -->
+<insert id="insertPosition" parameterType="Position">
+insert into position values (#{com_url}, pos_seq.nextval, #{pos_name})
+
+<selectKey resultType="int">
+select pos_seq.currval from dual
+</selectKey> 
+</insert>
+
+<!-- 직급명 수정 -->
+<update id="updatePosition" parameterType="Position" >
+update position set pos_name = #{pos_name} where pos_num = #{pos_num}
+</update>
+
+<!-- 직급 삭제 -->
+<delete id="deletePosition" parameterType="String" >
+delete from position where pos_num = #{pos_num}				
+</delete>
+
+ 
+
+</mapper>
+

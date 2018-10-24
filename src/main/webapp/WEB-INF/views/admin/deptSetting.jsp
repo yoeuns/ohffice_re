@@ -72,6 +72,27 @@ $(function() {
 		}
 	});
 	})();
+	// 직급 리스트 
+	$.ajax({
+		url: "posList.do",
+		data: {com_url: myUrl},
+		type: "post",
+		dataType: "json",
+		success: function (obj) {
+			// 리턴된 객체를 문자열로 변환함
+			var objStr = JSON.stringify(obj);
+			// 문자열을 json 객체로 바꿈
+			var jsonObj = JSON.parse(objStr);
+			
+			for(var i in jsonObj.list) {
+				var com_url = jsonObj.list[i].com_url;
+				if(myUrl == com_url) { 
+					$('#pos_select').append("<option value='" + jsonObj.list[i].pos_num + "'>" + jsonObj.list[i].pos_name + "</option>");
+					$('#pos_select1').append("<option value='" + jsonObj.list[i].pos_num + "'>" + jsonObj.list[i].pos_name + "</option>");
+				}				
+			}			
+		}
+	});
 	//권한 리스트 불러오기
 	$.ajax({
 		url: "authlist.do",
@@ -113,6 +134,10 @@ $(function() {
 					if(jsonObj.list[i].dept_name == null) {
 						dept_name = $('#com_name').val();
 					}
+					var pos_name = jsonObj.list[i].pos_name;
+					if(jsonObj.list[i].pos_num == null) {
+						pos_name = "";
+					}
 					var emp_tel = jsonObj.list[i].emp_tel;
 					if(jsonObj.list[i].emp_tel == null) {
 						emp_tel = " - ";
@@ -130,6 +155,7 @@ $(function() {
 							         "<div class='box-body table-responsive no-padding'>" +
 							         "<span class='label label-info'>" + jsonObj.list[i].auth_name + "</span>&nbsp;" +
 							         "<span>" + dept_name + "</span><br><br>" +
+							         "<span>" + pos_name + "</span><br>" +
 							         "<span><i class='fa fa-fw fa-phone'></i>" + emp_tel + "</span><br>" +
 							         "<span><i class='fa fa-fw fa-envelope-o'></i> <a style='cursor: default;'>" + jsonObj.list[i].emp_email + "</a></span>" +
 							         "</div>" + 
@@ -150,6 +176,7 @@ $(function() {
 					         "<div class='box-body table-responsive no-padding'>" +
 					         "<span class='label label-info'>" + jsonObj.list[i].auth_name + "</span>&nbsp;" +
 					         "<span>" + dept_name + "</span><br><br>" +
+					         "<span>" + pos_name + "</span><br>" +
 					         "<span><i class='fa fa-fw fa-phone'></i>" + emp_tel + "</span><br>" +
 					         "<span><i class='fa fa-fw fa-envelope-o'></i> <a style='cursor: default;'>" + jsonObj.list[i].emp_email + "</a></span>" +
 					         "</div>" + 
@@ -172,6 +199,7 @@ $(function() {
 		var emp_email = td.eq(0).text();
 		var auth_num = td.eq(1).text();
 		
+		$("#updatePos").attr("style", "visibility: visible;");
 		$("#updateEmp").attr("style", "visibility: visible;");
 		$("#deleteEmp").attr("style", "visibility: visible;");
 		$("#empEmail").attr("value", emp_email);
@@ -266,6 +294,30 @@ $(function() {
 					location.href = "moveDeptSetting.do";
 				} else {
 					alert("부서 이동에 실패하였습니다.");
+				}
+							
+			},
+			error: function(request, status, errorData) {
+				alert("error code : " + request.status + "\n" +
+					  "message : " + request.responseText + "\n" +
+					  "error : " + errorData);				
+			}
+		});
+	});
+	
+	$(document).on("click","#updatePosSave",function(){
+		var pos_num = $("#pos_select1").val();
+		var emp_email = $("#empEmail").val();
+
+		$.ajax({
+			url: "updateEmpPos.do",
+			data: {emp_email: emp_email, pos_num: pos_num},
+			type: "post",
+			success: function(result) {	
+				if(result == "ok") {
+					location.href = "moveDeptSetting.do";
+				} else {
+					alert("직급 변경에 실패하였습니다.");
 				}
 							
 			},
@@ -479,26 +531,7 @@ $(function() {
 
 </script>
 </head>
-<!--
-BODY TAG OPTIONS:
-=================
-Apply one or more of the following classes to get the
-desired effect
-|---------------------------------------------------------|
-| SKINS         | skin-blue                               |
-|               | skin-black                              |
-|               | skin-purple                             |
-|               | skin-yellow                             |
-|               | skin-red                                |
-|               | skin-green                              |
-|---------------------------------------------------------|
-|LAYOUT OPTIONS | fixed                                   |
-|               | layout-boxed                            |
-|               | layout-top-nav                          |
-|               | sidebar-collapse                        |
-|               | sidebar-mini                            |
-|---------------------------------------------------------|
--->
+
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
 
@@ -559,6 +592,7 @@ desired effect
           <div class="box box-default">
             <div class="box-header with-border">
               <h3 class="box-title pull-right">
+              <input type="button" class="btn btn-info" id="updatePos" style="visibility: hidden;" data-toggle='modal' data-target='#updateP' value="직급 변경">
               <input type="button" class="btn btn-info" id="updateEmp" style="visibility: hidden;" data-toggle='modal' data-target='#updateE' value="부서 이동">
               <input type="button" class="btn btn-info" id="deleteEmp" style="visibility: hidden;" data-toggle='modal' data-target='#deleteE' value="조직원 삭제">
               <input type="button" class="btn btn-info" id="insertEmp" name="insertEmp" data-toggle='modal' data-target='#insertE' value="조직원 추가">
@@ -636,6 +670,31 @@ desired effect
         </div>
         <!-- /.modal -->
         
+        <!-- 부서 이동 모달 -->
+          <div class="modal fade" id="updateP">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">                
+                <h4 class="modal-title">직급 변경</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span></button>
+              </div>
+              <div class="modal-body">
+              <select class="form-control" id="pos_select1">
+                  <option value="0">--선택--</option>
+              </select>
+              </div>
+              <div class="modal-footer">              
+              	<a id="updatePosSave" class="btn btn-info btn-flat">Save</a>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+            <!-- /.modal-content -->
+          </div>
+          <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+        
         <!-- 조직원 삭제 모달 -->
           <div class="modal fade" id="deleteE">
           <div class="modal-dialog modal-dialog-centered">
@@ -687,7 +746,7 @@ desired effect
                 <div class="form-group">
                   <label for="pos_select">직위/직책</label>
                   <select class="form-control" id="pos_select">
-                  <option value="">--선택--</option>
+                  <option value="0">--선택--</option>
                   </select>
                 </div>
                 <div class="form-group">

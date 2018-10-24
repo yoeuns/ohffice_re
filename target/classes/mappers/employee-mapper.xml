@@ -130,6 +130,8 @@
 	<result property="dept_name" column="dept_name" />
 	<result property="auth_name" column="auth_name" />
 	<result property="com_name" column="com_name" />
+	<result property="pos_num" column="pos_num" />
+	<result property="pos_name" column="pos_name" />
 	</resultMap>
 	
 	<select id="selectInfoList" resultMap="resultInfoList" resultType="CommonInfo">
@@ -139,10 +141,11 @@
 	left join position using(pos_num)
 </select>
 	<select id="empList" resultType="EmployeeList" resultMap="resultEmpList">
-		select emp_email, emp_name, e.auth_num, e.dept_num, e.com_url, emp_tel, dept_name, auth_name 
+		select emp_email, emp_name, e.auth_num, e.dept_num, e.com_url, emp_tel, dept_name, auth_name, e.pos_num, pos_name 
 		from employee e
 		left OUTER JOIN department D ON e.dept_num = D.dept_num
 		left OUTER JOIN authority a on e.auth_num = a.auth_num
+    	left OUTER JOIN position p on e.pos_num = p.pos_num
 		order by e.auth_num
 	</select>
 	
@@ -234,5 +237,11 @@
       FULL OUTER JOIN COMPANY C ON C.COM_URL = E.COM_URL WHERE D.DEPT_NAME = #{dept_name}
       
    </select>
+   
+   <update id="updateEmpPos" parameterType="Employee">
+		update employee
+		set pos_num = #{pos_num}
+		where emp_email = #{emp_email} 
+	</update>
   	
 </mapper>

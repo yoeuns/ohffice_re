@@ -229,6 +229,8 @@ public class EmpController {
 			job.put("com_url", e.getCom_url());	
 			job.put("dept_name", e.getDept_name());	
 			job.put("auth_name", e.getAuth_name());	
+			job.put("pos_name", e.getPos_name());	
+			job.put("pos_num", e.getPos_num());	
 
 			jarr.add(job);
 		}
@@ -387,4 +389,21 @@ public class EmpController {
 	      out.flush();
 	      out.close();
 	   }
+	   
+	   @RequestMapping(value="updateEmpPos.do", method=RequestMethod.POST)
+		public String updateEmpPos(HttpServletResponse response, Employee emp) throws Exception {
+			response.setContentType("text/html; charset=UTF-8");
+			PrintWriter out = response.getWriter();
+			
+			if(empService.updateEmpPos(emp) > 0) {
+				out.append("ok");
+				out.flush();
+			} else {
+				out.append("fail");
+				out.flush();
+			}		
+			out.close();
+			
+			return "admin/deptSetting";
+		}
 }

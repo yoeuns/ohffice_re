@@ -2,7 +2,8 @@
 <%@ page session="true" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
+<!-- Main Header -->
+<%@ include file="header.jsp"%>
 <!DOCTYPE>
 <html>
 <head>
@@ -43,10 +44,41 @@ desired effect
 |               | sidebar-mini                            |
 |---------------------------------------------------------|
 -->
+<script type="text/javascript">
+$(document).ready(function(){
+	$.ajax({
+		url : "infoCom.do",
+		dataType : "json",
+		type : "post",
+		success : function(data) {
+			var a = data.addr;
+			var b = "";
+			var addr = "-";			
+			if(a != null) {
+				b = a.split("|");
+				addr = b[1] + " " + b[2];
+			}
+			
+			var tel = data.tel;
+			if(tel == null) {
+				tel = "-";
+			}
+			
+			$("#box-title-name").html(data.name);
+			$("#modal-body-name").html("<i class='fa fa-fw fa-circle-o'></i> 회사명 : " + data.name);
+			$("#modal-body-addr").html("<i class='fa fa-fw fa-circle-o'></i> 주소 : " + addr);
+			$("#modal-body-tel").html("<i class='fa fa-fw fa-circle-o'></i> 전화번호 : " + tel);
+		},
+		error : function(error) {
+			alert("에러!");
+		}
+	});
+});
+</script>
+
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
-<!-- Main Header -->
-<%@ include file="header.jsp"%>
+
   <!-- Left side column. contains the logo and sidebar -->
 <%@ include file="aside.jsp"%>
   <!-- Content Wrapper. Contains page content -->
@@ -69,13 +101,13 @@ desired effect
 	      <div class="box box-default" data-toggle="modal" data-target="#companyInfo">
 	         <div class="box-header with-border">
 	          <i class="fa fa-building"></i>
-	          <h3 class="box-title">처음처럼</h3>
+	          <h3 class="box-title" id="box-title-name"></h3>
 	         </div>
 	      </div>      
           
           <!-- 회사 소개 모달 -->
           <div class="modal fade" id="companyInfo">
-          <div class="modal-dialog modal-dialog-centered"">
+          <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
               <div class="modal-header">                
                 <h4 class="modal-title">회사 소개</h4>
@@ -83,11 +115,10 @@ desired effect
                 <span aria-hidden="true">&times;</span></button>
               </div>
               <div class="modal-body">
-                <p><img src="#">(회사로고)처음처럼</p>
-			 	<p>회사 소개 : </p>
-			    <p>회사 상세 정보 : </p>
-			    <p>회사 주소 : </p>
-		        <p>회사 연혁 : </p>
+                <p id="modal-body-name"></p>
+			 	<p id="modal-body-addr"></p>
+			    <p id="modal-body-tel"></p>
+			    <p id="modal-body-url"></p>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

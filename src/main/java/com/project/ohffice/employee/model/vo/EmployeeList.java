@@ -15,12 +15,14 @@ public class EmployeeList implements Serializable {
 	private String com_url;
 	private String dept_name;
 	private String auth_name;
+	private Integer pos_num;
+	private String pos_name;
 	private String com_name;
 	
 	public EmployeeList() {}
 
 	public EmployeeList(String emp_email, String emp_name, Integer auth_num, Integer dept_num, String emp_tel,
-			String com_url, String dept_name, String auth_name, String com_name) {
+			String com_url, String dept_name, String auth_name, Integer pos_num, String pos_name, String com_name) {
 		super();
 		this.emp_email = emp_email;
 		this.emp_name = emp_name;
@@ -30,8 +32,12 @@ public class EmployeeList implements Serializable {
 		this.com_url = com_url;
 		this.dept_name = dept_name;
 		this.auth_name = auth_name;
+		this.pos_num = pos_num;
+		this.pos_name = pos_name;
 		this.com_name = com_name;
 	}
+
+
 
 	public String getEmp_email() {
 		return emp_email;
@@ -101,7 +107,23 @@ public class EmployeeList implements Serializable {
 		return com_name;
 	}
 
-	public void setgetCom_name(String com_name) {
+	public Integer getPos_num() {
+		return pos_num;
+	}
+
+	public void setPos_num(Integer pos_num) {
+		this.pos_num = pos_num;
+	}
+
+	public String getPos_name() {
+		return pos_name;
+	}
+
+	public void setPos_name(String pos_name) {
+		this.pos_name = pos_name;
+	}
+
+	public void setCom_name(String com_name) {
 		this.com_name = com_name;
 	}
 

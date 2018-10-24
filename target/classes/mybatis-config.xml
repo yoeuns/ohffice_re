@@ -18,6 +18,7 @@
 		<typeAlias type="com.project.ohffice.employee.model.vo.EmployeeList" alias="EmployeeList" />
 		<typeAlias type="com.project.ohffice.document.model.vo.Document" alias="Document" />
 		<typeAlias type="com.project.ohffice.authority.model.vo.Authority" alias="Authority" />
+		<typeAlias type="com.project.ohffice.position.model.vo.Position" alias="Position" />
 	</typeAliases>
 	<!-- 사용할 쿼리문을 가지고 있는 매퍼파일 등록은 필수 -->
 	<!-- 주의 : 등록된 매퍼파일 중에 오류가 있으면, 다른 매퍼에도 영향을 준다. -->
@@ -30,5 +31,6 @@
 		<mapper resource="mappers/Folder-mapper.xml" />
 		<mapper resource="mappers/document-mapper.xml" />
 		<mapper resource="mappers/authority-mapper.xml" />
+		<mapper resource="mappers/position-mapper.xml" />
 	</mappers>
 </configuration>

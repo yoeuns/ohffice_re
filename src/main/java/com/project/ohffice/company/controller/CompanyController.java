@@ -7,11 +7,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.project.ohffice.company.model.service.CompanyService;
@@ -100,6 +102,29 @@ public class CompanyController {
 				
 		return mv;
 		
+	}
+	
+	@RequestMapping(value="infoCom.do", method=RequestMethod.POST)
+	@ResponseBody
+	public JSONObject infoCom(HttpServletResponse response, HttpServletRequest request) {
+		
+		response.setContentType("application/json; charset=utf-8");
+
+		HttpSession session = request.getSession();
+
+		Employee emp = (Employee) session.getAttribute("loginUser");
+
+		String comURL = emp.getCom_url();
+		
+		Company com = companyService.infoCom(comURL);
+		
+		JSONObject job = new JSONObject();
+		job.put("name", com.getCom_name());
+		job.put("tel", com.getCom_tel());
+		job.put("addr", com.getCom_addr());
+
+		return job;
+
 	}
 
 }

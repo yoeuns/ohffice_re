@@ -128,25 +128,6 @@ public class DivisionController {
 		out.close();
 	}
 	
-	@RequestMapping(value="updateBoardAuth.do", method=RequestMethod.POST)
-	public ResponseEntity<String> updateBoardAuthMethod(@RequestBody String param) throws Exception {
-		
-		System.out.println("param : " + param);
-		
-		// 전송 온 json 문자열을 json 객체로 바꿈
-		JSONParser jparser = new JSONParser();
-		JSONArray jarr = (JSONArray) jparser.parse(param);
-		
-		System.out.println("jarr size : " + jarr.size());
-		
-		/*for(int i = 0; i < jarr.size(); i++) {
-			JSONObject job = (JSONObject) jarr.get(i);
-			
-		}	*/	
-		
-		return new ResponseEntity<String>("success", HttpStatus.OK);
-	}
-	
 	@RequestMapping(value="boardVisible.do", method=RequestMethod.POST)
 	public ResponseEntity<String> boardVisibleMethod(@RequestBody String param) throws Exception {
 		

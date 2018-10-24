@@ -94,4 +94,8 @@ public class EmpDao {
 		return (List) sqlSession.selectList("employeeMapper.selectDept", dept_name);
 	}
 
+	public int updateEmpPos(Employee emp) {
+		return sqlSession.update("employeeMapper.updateEmpPos", emp);
+	}
+
 }

@@ -43,5 +43,7 @@ public interface EmpService {
 
 	public abstract List<EmployeeList> selectDept(String dept_name);
 
+	int updateEmpPos(Employee emp);
+
 
 }

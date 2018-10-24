@@ -15,5 +15,7 @@ public interface CompanyService {
 	int createBoard(HashMap map);
 	
 	public abstract int comChangeMethod(Company com);
+	
+	public abstract Company infoCom(String comURL);
 
 }
